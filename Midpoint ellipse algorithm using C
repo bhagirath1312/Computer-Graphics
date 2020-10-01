@@ -1,74 +1,58 @@
 #include<stdio.h>
 #include<conio.h>
 #include<graphics.h>
-
-void midpoint_ellipse(int xc, int yc, int rx, int ry)
+void main()
 {
-int x, y, p;
-x=0;
-y=ry;
-p=(ry*ry)-(rx*rx*ry)+((rx*rx)/4);
+ int gd=DETECT,gm;
+ float p,x,y,xc,yc,a,b;
+ initgraph(&gd,&gm,"C:\\TURBOC3\\BGI");
+ printf("Enter xc, yc:\n");
+ scanf("%f%f",&xc,&yc);
+ printf("Enter rx, ry:\n");
+ scanf("%f%f",&a,&b);
+ x=0;
+ y=b;
+ //Region 1
+ p=(b*b)-(a*a*b)+(0.25*a*a);
+ do
+ {
+  putpixel(xc+x,yc+y,WHITE);
+  putpixel(xc+x,yc-y,WHITE);
+  putpixel(xc-x,yc+y,WHITE);
+  putpixel(xc-x,yc-y,WHITE);
+  if(p<0)
+  {
+   x=x+1;
+   p=p+2*b*b*x+b*b;
+  }
+  else
+  {
+   x=x+1;
+   y=y-1;
+   p=p+2*b*b*x-2*a*a*y+b*b;
+  }
+ }while(2*b*b*x<2*a*a*y);
+ //Region 2
+ p=(b*b*(x+0.5)*(x+0.5))+((y-1)*(y-1)*a*a-a*a*b*b);
+ do
+ {
+  putpixel(xc+x,yc+y,WHITE);
+  putpixel(xc+x,yc-y,WHITE);
+  putpixel(xc-x,yc+y,WHITE);
+  putpixel(xc-x,yc-y,WHITE);
+  if(p>0)
+  {
+   y=y-1;
+   p=p-2*a*a*y+a*a;
+  }
+  else
+  {
+   x=x+1;
+   y=y-1;
+   p=p-2*a*a*y+2*b*b*x+a*a;
+  }
+ }while(y!=0);
+ getch();
+ closegraph();
 
-while((2*x*ry*ry)&lt;(2*y*rx*rx))
-{
-putpixel(xc+x,yc-y,WHITE);
-putpixel(xc-x,yc+y,WHITE);
-putpixel(xc+x,yc+y,WHITE);
-putpixel(xc-x,yc-y,WHITE);
-
-if(p&lt;0)
-{
-x=x+1;
-p=p+(2*ry*ry*x)+(ry*ry);
-}
-
-else
-{
-x=x+1;
-y=y-1;
-p=p+(2*ry*ry*x+ry*ry)-(2*rx*rx*y);
-}
-}
-p=((float)x+0.5)*((float)x+0.5)*ry*ry+(y-1)*(y-1)*rx*rx-rx*rx*ry*ry;
-
-while(y&gt;=0)
-{
-putpixel(xc+x,yc-y,WHITE);
-putpixel(xc-x,yc+y,WHITE);
-putpixel(xc+x,yc+y,WHITE);
-putpixel(xc-x,yc-y,WHITE);
-
-if(p&gt;0)
-{
-y=y-1;
-p=p-(2*rx*rx*y)+(rx*rx);
-
-}
-else
-{
-y=y-1;
-x=x+1;
-p=p+(2*ry*ry*x)-(2*rx*rx*y)-(rx*rx);
-}
-}
-
-}
-
-void main(void)
-{
-int gd = DETECT, gm;
-int xc,yc,rx,ry;
-clrscr();
-initgraph(&amp;gd, &amp;gm &quot;C:\\TURBOC3\\BGI&quot;);
-printf(&quot;Enter value of xc=&quot;);
-scanf(&quot;%d&quot;,&amp;xc);
-printf(&quot;Enter value of yc=&quot;);
-scanf(&quot;%d&quot;,&amp;yc);
-printf(&quot;Enter value of rx=&quot;);
-scanf(&quot;%d&quot;,&amp;rx);
-printf(&quot;Enter value of ry=&quot;);
-scanf(&quot;%d&quot;,&amp;ry);
-midpoint_ellipse(xc,yc,rx,ry);
-getch();
-closegraph();
 }
